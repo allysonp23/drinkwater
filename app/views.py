@@ -3,6 +3,7 @@ from django.contrib import messages, auth
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 
 def cadastro(request):
     if request.method != "POST":
@@ -63,3 +64,7 @@ def logout(request):
 @login_required(redirect_field_name='login')
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+def cadastro_usuario(request):
+    if request.method =="POST"
+        form_usuario = 
