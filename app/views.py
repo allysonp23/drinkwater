@@ -66,5 +66,11 @@ def dashboard(request):
     return render(request, 'dashboard.html')
 
 def cadastro_usuario(request):
-    if request.method =="POST"
-        form_usuario = 
+    if request.method =="POST":
+        form_usuario = UserCreationForm(request.POST)
+        if form_usuario.is_valid():
+            form_usuario.save()
+            return redirect('home')
+        else:
+            form_usuario = UserCreationForm()
+        return render(request, 'cadastro.html', {'form_usuario': form_usuario})
