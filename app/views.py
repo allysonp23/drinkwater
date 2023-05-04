@@ -18,6 +18,7 @@ def cadastrar_usuario(request):
             usuario_novo = Usuario(nome=nome, email=email, peso=peso, password=password)
             usuario_services.cadastrar_usuario(usuario_novo)
             return redirect('home')
+        
     else:
         form_usuario = UserCreationForm
     return render(request, 'index.html', {'form_usuario': form_usuario})
