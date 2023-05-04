@@ -4,73 +4,23 @@ from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from . import forms, usuario_services
+from .usuario import Usuario
 
-def cadastro(request):
-    if request.method != "POST":
-        return render (request, 'app/index.html')
-    
-    usuario = request.POST.get('usuario')
-    senha = request.POST.get('senha')
-    senha2 = request.POST.get('senha2')
-    peso = request.POST.get('peso')
-    
-    if not usuario or not usuario or not senha \
-            or not senha2 or not peso:
-        messages.error(request, 'Nenhum campo pode estar vazio')
-        return render(request, 'app/index.html')
-    
-    if len(senha) < 6:
-        messages.error(request, 'Senha precisar ter pelo menos 6 caracteres!')
-        return render(request, 'app/index.html')
-
-    if len(usuario) < 5:
-        messages.error(request, 'Usuário precisar ter pelo menos 6 caracteres!')
-        return render(request, 'app/index.html')
-
-    if senha != senha2:
-        messages.error(request, 'Senhas não conferem!')
-        return render(request, 'app/index.html')
-
-    if User.objects.filter(username=usuario).exists():
-        messages.error(request, 'Usuário já cadastrado!')
-        return render(request, 'app/index.html')
-
-    messages.success(request, 'Registrado com sucesso! Agora faça seu login!')
-
-    user = User.objects.create_user(username=usuario, password=senha)
-    return redirect('login')
-
-def login(request):
-    if request.method != 'POST':
-        return render(request)
-    usuario = request.POST.get('usuario')
-    senha = request.POST.get('senha')
-    
-    user = auth.authenticate(request, username=usuario, password=senha)
-    
-    if not user:
-        messages.error(request, 'Usuário ou senha inválidos')
-        return render(request, 'app/index.html')
-    
-    else:
-        auth.login(request, user)
-        messages.sucess(request, 'Você fez login com sucesso!')
-        return redirect ('dashboard')
-    
-def logout(request):
-    auth.logout(request)
-    return redirect('app/index.html')
-
-@login_required(redirect_field_name='login')
-def dashboard(request):
-    return render(request, 'dashboard.html')
-
-def cadastro_usuario(request):
-    if request.method =="POST":
-        form_usuario = UserCreationForm(request.POST)
+def cadastrar_usuario(request):
+    if request.method == "POST":
+        form_usuario = forms.UsuarioForm(data=request.POST)
         if form_usuario.is_valid():
-            form_usuario.save()
+            nome = form_usuario.cleaned_data["nome"]
+            email = form_usuario.cleaned_data["email"]
+            peso = form_usuario.cleaned_data["peso"]
+            password = form_usuario.cleaned_data["password"]
+            usuario_novo = Usuario(nome=nome, email=email, peso=peso, password=password)
+            usuario_services.cadastrar_usuario(usuario_novo)
             return redirect('home')
-        else:
-            form_usuario = UserCreationForm()
-        return render(request, 'cadastro.html', {'form_usuario': form_usuario})
+    else:
+        form_usuario = UserCreationForm
+    return render(request, 'index.html', {'form_usuario': form_usuario})
+        
+        
+        
