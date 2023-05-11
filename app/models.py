@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import datetime
 
 class Usuario(AbstractBaseUser):
     nome = models.CharField(max_length=55, null=False, blank=False)
@@ -55,14 +55,14 @@ class Estoque(TimeStampedModel):
         return str(self.pk)
     
 class ConsumoAgua(models.Model):
-    COPO_1 = 1
-    COPO_2 = 2
+    COPO_1 = 250
+    COPO_2 = 350
     
     INTEGER_CHOICES = (
-    (COPO_1, 'Primeiro Valor'),
-    (COPO_2, 'Segundo Valor'),
+    (COPO_1, 250),
+    (COPO_2, 350),
     )
-    estoque = models.ForeignKey(Estoque, on_delete=models.CASCADE)
+    data = models.DateTimeField(default=datetime.today)
     quantidade = models.CharField(choices=INTEGER_CHOICES, max_length=8)
     
     class Meta:

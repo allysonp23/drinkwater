@@ -3,11 +3,11 @@ class Usuario():
         self.__nome = nome
         self.__email = email
         self.__peso = peso
-        self.__passwrod = password
+        self.__password = password
     
     @property
     def nome(self):
-        return self.nome
+        return self.__nome
     
     @nome.setter
     def nome(self, nome):
@@ -15,7 +15,7 @@ class Usuario():
         
     @property
     def email(self):
-        return self.email
+        return self.__email
     
     @email.setter
     def email(self, email):
@@ -23,7 +23,7 @@ class Usuario():
         
     @property
     def peso(self):
-        return self.peso
+        return self.__peso
     
     @peso.setter
     def peso(self, peso):
@@ -31,7 +31,7 @@ class Usuario():
     
     @property
     def password(self):
-        return self.password
+        return self.__password
     
     @nome.setter
     def password(self, password):
