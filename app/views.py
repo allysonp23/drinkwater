@@ -8,7 +8,7 @@ from . import forms, usuario_services
 from .usuario import Usuario
 
 def cadastrar_usuario(request):
-    if request.method == "POST":
+    if request.method != "POST":
         form_usuario = forms.UsuarioForm(data=request.POST)
         if form_usuario.is_valid():
             nome = form_usuario.cleaned_data["nome"]
